@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "atomic": "cpp",
+        "ostream": "cpp",
+        "random": "cpp",
+        "vector": "cpp",
+        "deque": "cpp",
+        "string": "cpp"
+    }
+}
