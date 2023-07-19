@@ -32,60 +32,45 @@ void print(ListNode *head)
     }
     cout << endl;
 }
-ListNode *insertionSortList(ListNode *head)
-{
-    if (head == NULL || head->next == NULL)
-    {
+ListNode* insertionSortList(ListNode* head) {
+        if(head == NULL)
+            return NULL;
+
+        ListNode* temp = head;
+        while(temp != NULL && temp -> next != NULL){
+            ListNode* curr = temp -> next;
+            if(temp -> val > curr -> val){
+                temp -> next = curr -> next;
+                ListNode* prev = NULL;
+                ListNode* ptr = head;
+                while(ptr != NULL && ptr -> val < curr -> val){
+                    prev = ptr;
+                    ptr = ptr -> next;
+                }
+                if(prev == NULL){
+                    curr -> next = head;
+                    head = curr;
+                }
+                else{
+                    prev -> next = curr;
+                    curr -> next = ptr;
+                }
+            }
+            else{
+                temp = temp -> next;
+            }
+        }
         return head;
     }
-
-    ListNode *temp1 = head;
-    ListNode *store = head->next;
-    while (temp1->next != NULL)
-    {
-        ListNode *temp1 = store->next;
-        store->next = temp1->next;
-        ListNode *prev = NULL;
-        ListNode *curr = head;
-        store=temp1->next;
-        while (curr != NULL)
-        {
-            if (curr->val > temp1->val)
-            {
-                break;
-            }
-            else
-            {
-                prev = curr;
-                curr = curr->next;
-            }
-        }
-        if (prev==NULL)
-        {
-            temp1->next = curr;
-            // store=store->next;print(store);
-            head=temp1;
-            print(head);
-        }
-        // else
-        // {
-        //     ListNode* storestore=store;
-        //     store=store->next;
-        //     prev->next = storestore;
-        //     storestore->next = curr;
-        // }
-        // print(store);
-    }
-    return head;
-}
 int main()
 {
+    // 4,2,1,3
     ListNode *head = NULL;
     ListNode *tail = NULL;
     insertAtTail(head, tail, 4);
-    insertAtTail(head, tail, 3);
     insertAtTail(head, tail, 2);
     insertAtTail(head, tail, 1);
+    insertAtTail(head, tail, 3);
     print(head);
     ListNode* ans=insertionSortList(head);
     print(ans);

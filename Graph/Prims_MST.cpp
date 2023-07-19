@@ -6,6 +6,12 @@
 #include<list>
 using namespace std;
 
+class compare{
+    public:
+    bool operator()(pair<int,int> a,pair<int,int> b){
+        return a.first > b.first;
+    }
+};
 
 vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>> &g){
     
@@ -18,24 +24,47 @@ vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pa
         adj[u].push_back(make_pair(v,w)); 
         adj[v].push_back(make_pair(u,w)); 
     }
-
-    //Dist array
-    vector<int> key(n+1,INT_MAX);
-    vector<int> parent(n+1,-1);
-    vector<bool> mst(n+1,-1);
+    //Key node pair<value,node> 
+    vector<int> key(n+1);
+    //mst of each node
+    unordered_map<int,bool> mst; 
+    //maping the parent of node
+    unordered_map<int,int> parent;
+    for(int i=1;i<= n ;i++){
+        key[i]=INT_MAX;
+        mst[i] = false;
+        parent[i] = -1;
+    }
 
     key[1] = 0;
-    parent[1] = -1;
 
-    for(int i = 1;i < n ;i++){
-        int mini = INT_MAX;
-        int u;
+    for(int i = 1;i <= n ;i++){
+        //find the minimun
+        int minimun = INT_MAX;
+        for(int i = 1;i<= n;i++){
+            if(key[i] < minimun && !mst[i]){
+                // cout<<key[i]<<"\t"<<minimun<<endl;
+                minimun = i;
+            }
+        }
+        mst[minimun] = true;
 
-        //Find the MiniMum
-        
+        for(auto i:adj[minimun]){
+            if(key[i.first] > i.second){
+                parent[i.first] = minimun;
+                key[i.first] = i.second;
+            }
+        } 
     }
+    vector<pair<pair<int, int>, int>> ans;
+    for(int i=2;i<= n ;i++){
+        ans.push_back({{parent[i],i},key[i]});
+    }
+
+    return ans;
 }
 
 int main(){
-    vector<pair<pair<int,int>,int>> edges = {make_pair(make_pair(1,2),2),make_pair(make_pair(1,4),6),make_pair(make_pair(2,1),2),make_pair(make_pair(1,2),2)};
+    vector<pair<pair<int,int>,int>> edges = {make_pair(make_pair(1,2),5),make_pair(make_pair(1,3),8),make_pair(make_pair(2,3),10),make_pair(make_pair(2,4),15),make_pair(make_pair(3,4),20)};
+    calculatePrimsMST(4,5,edges);
 }
