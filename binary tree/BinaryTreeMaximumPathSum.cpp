@@ -1,22 +1,37 @@
 #include "TreeNode.h"
 #include<climits>
 
-void solve(TreeNode* root,int &ans){
+int solve(TreeNode* root){
     if(root == NULL)
-        return ;
+        return INT_MIN;
 
-    solve(root->left,ans);
-    solve(root->right,ans);
+    if(root -> left == NULL && root ->right == NULL)
+        return root->val;
 
-    int sum = ans + root->val;
+    int sum = 0;
+    int leftSum = 0;
+    int rightSum = 0;
+    int left = solve(root->left);
+    if(left != INT_MIN){
+        sum += left;
+        leftSum = sum + root->val;
+    }
+    int right = solve(root->right);
+    if(right != INT_MIN){
+        sum+=right;
+        rightSum = sum + root -> val;
+    }
+    
+    sum+=root->val;
+    
+    sum = max(sum,max(leftSum,rightSum));
+    
 
-    ans = max(ans,sum);
+    return max(root->val,max(right,max(sum,left)));
 }
 
 int maxPathSum(TreeNode* root) {
-    int ans=0;
-    solve(root,ans);
-    return ans;
+    return solve(root);
 }
 int main(){
     vector<int> val={1,2,-1,-1,3,-1,-1};
