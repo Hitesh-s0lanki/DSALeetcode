@@ -1,107 +1,81 @@
 #include <iostream>
 #include <stack>
 using namespace std;
-// int calculate(string s)
-// {
-//     stack<int> q;
-//     int i = 0;
-//     int num = 0;
-//     while (i < s.length())
-//     {
-//         if (s[i] == '+' || s[i] == '*' || s[i] == '-' || s[i] == '/')
-//         {
-//             char ch = s[i];
-//             i++;
-//             while (i < s.length() && s[i] >= '0' && s[i] <= '9')
-//             {
-//                 num = num * 10 + (s[i++] - '0');
-//             }
-//             if (ch == '+')
-//             {
-//                 q.top() += num;
-//             }
-//             else if (ch == '-')
-//             {
-//                 q.top() -= num;
-//             }
-//             else if (ch == '*')
-//             {
-//                 q.top() *= num;
-//             }
-//             else if (ch == '/')
-//             {
-//                 q.top() /= num;
-//             }
-//             num = 0;
-//         }
-//         else
-//         {
-//             while (i < s.length() && s[i] >= '0' && s[i] <= '9')
-//             {
-//                 num = num * 10 + (s[i++] - '0');
-//             }
-//             q.push(num);
-//             num = 0;
-//         }
-//     }
-//     return q.top();
-// }
-int calculate(string s){
-    stack<int> q;
-    int sign=0;
-    int i=0;
-    if(s[0]=='-'){
-        i=1;
-        sign=1;
-    }
-    while(i<s.length()){
-        if(s[i]==')'){
-            while(!q.empty()&&q.top()!='('){
-                int num=q.top();
-                q.pop();
-                if(q.top()=='+'-'0'){
-                    q.pop();
-                    q.top()+=num;
-                }
-                else if(q.top()=='-'-'0'){
-                    q.pop();
-                    q.top()-=num;
-                }
-                else if(q.top()=='*'-'0'){
-                    q.pop();
-                    q.top()*=num;
-                }
-                else if(q.top()=='/'-'0'){
-                    q.pop();
-                    q.top()/=num;
-                }
-            }
-            cout<<q.top()<<endl;
-            int change=q.top();
-                q.pop();
-                q.pop();
-                q.push(change);
 
-                i++;
-        }
-        else if(s[i] >= '0' && s[i] <= '9'){
-            int num=0;
-            while (i < s.length() && s[i] >= '0' && s[i] <= '9')
-            {
-                num = num * 10 + (s[i++] - '0');
+string postfixExpression(string equation){
+    stack<char> s;
+    s.push('(');
+    equation.push_back(')');
+    
+    string postfix;
+
+    for(char ch:equation){
+        if(ch >= '0' && ch <= '9'){
+            postfix.push_back(ch);
+        } else if(ch == '('){
+            s.push(ch);
+        } else if(ch == '+' || ch == '-' || ch == '*' || ch == '/'){
+            if(ch == '+' || ch == '-'){
+                while(!s.empty() && (s.top() == '*' || s.top() == '/' || s.top() == ch || (s.top() == '+' && ch == '-') || (s.top() == '-' && ch == '+'))){
+                    postfix.push_back(s.top());
+                    s.pop();
+                }
             }
-            q.push(num);
-            num = 0;
-        }
-        else{
-            q.push(s[i++]);
+            s.push(ch);
+        } else if(ch == ')'){
+            while(!s.empty() && s.top() != '('){
+                postfix.push_back(s.top());
+                s.pop();
+            }
+            s.pop();
         }
     }
-    return q.top();
+
+    return postfix;
+
 }
-int main()
-{
-    string s = "(1*2-3+4)";
-    cout << calculate(s);
+
+int calculate(string s) {
+     string postfix = postfixExpression(s);
+
+    stack<int> st;   
+    cout<<postfix<<endl;
+     for(char ch : postfix){
+        if(ch >= '0' && ch <= '9'){
+            st.push(ch - '0');
+        }else{
+            if(ch == '+'){
+                int num = st.top();
+                st.pop();
+                num += st.top();
+                st.pop();
+                st.push(num);
+            } else if(ch == '-'){
+                int num = st.top();
+                st.pop();
+                num = st.top() - num;
+                st.pop();
+                st.push(num);
+            } else if(ch == '*'){
+                int num = st.top();
+                st.pop();
+                num *= st.top();
+                st.pop();
+                st.push(num);
+            } else if(ch == '/'){
+                int num = st.top();
+                st.pop();
+                num = st.top()/num;
+                st.pop();
+                st.push(num);
+            }
+        }
+     }
+
+     return st.top();
+
 }
-//without eval() bhai
+int main(){
+    string s = "(1+(4+5+2)-3)+(6+8)";
+    cout<<calculate(s);
+}

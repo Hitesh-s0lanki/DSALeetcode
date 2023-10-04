@@ -3,6 +3,12 @@
         "*.embeddedhtml": "html",
         "unordered_map": "cpp",
         "map": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "queue": "cpp",
+        "ostream": "cpp",
+        "vector": "cpp",
+        "utility": "cpp",
+        "stack": "cpp",
+        "iostream": "cpp"
     }
 }
