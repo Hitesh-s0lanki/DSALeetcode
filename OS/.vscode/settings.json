@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "vector": "cpp",
+        "xstddef": "cpp",
+        "queue": "cpp",
+        "utility": "cpp",
+        "cstdlib": "cpp"
+    }
+}
