@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 void spaceLine(int n)
@@ -276,6 +277,62 @@ void printC(int i, int n)
         }
     }
 }
+void printD(int i, int n)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if ((j != n - 1 && (j == 0 || i == 0 || i == n - 1)) || (j == n - 1 && i != 0 && i != n - 1))
+        {
+            cout << "* ";
+        }
+        else
+        {
+            cout << "  ";
+        }
+    }
+}
+void printG(int i, int n)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (j == 0 || i == 0 || i == n - 1 || (i >= n / 2 && ((j >= n / 2 && i == n / 2) || (j == n - 1))))
+        {
+            cout << "* ";
+        }
+        else
+        {
+            cout << "  ";
+        }
+    }
+}
+void printF(int i, int n)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (j == 0 || i == 0 || i == n / 2)
+        {
+            cout << "* ";
+        }
+        else
+        {
+            cout << "  ";
+        }
+    }
+}
+void printW(int i, int n)
+{
+    for (int j = 0; j < n; j++)
+    {
+        if (j == 0 || j == n - 1 || (i >= n / 2 && (j + (i - (n / 2)) == n / 2 || j - (i - (n / 2)) == n / 2)))
+        {
+            cout << "* ";
+        }
+        else
+        {
+            cout << "  ";
+        }
+    }
+}
 
 void printLetter(char letter, int i, int n)
 {
@@ -290,8 +347,17 @@ void printLetter(char letter, int i, int n)
     case 'C':
         printC(i, n);
         break;
+    case 'D':
+        printD(i, n);
+        break;
     case 'E':
         printE(i, n);
+        break;
+    case 'F':
+        printF(i, n);
+        break;
+    case 'G':
+        printG(i, n);
         break;
     case 'H':
         printH(i, n);
@@ -335,6 +401,9 @@ void printLetter(char letter, int i, int n)
     case 'V':
         printV(i, n);
         break;
+    case 'W':
+        printW(i, n);
+        break;
     default:
         spaceLine(n);
     }
@@ -347,7 +416,9 @@ int main()
     int n = 5;
     string name;
     cout << "Enter the Text : ";
-    cin >> name;
+    getline(cin, name);
+
+    cout << name << endl;
 
     for (int i = 0; i < n; i++)
     {
@@ -357,7 +428,7 @@ int main()
             {
                 printLetter(j - 32, i, n);
             }
-            else
+            else if (j >= 'A' || j <= 'Z')
             {
                 printLetter(j, i, n);
             }
