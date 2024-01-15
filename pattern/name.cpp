@@ -404,6 +404,9 @@ void printLetter(char letter, int i, int n)
     case 'W':
         printW(i, n);
         break;
+    case 'Y':
+        printY(i, n);
+        break;
     default:
         spaceLine(n);
     }
