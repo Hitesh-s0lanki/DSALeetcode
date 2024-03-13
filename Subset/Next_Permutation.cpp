@@ -19,9 +19,7 @@ void nextPermutation(vector<int>& nums) {
     sort(nums.begin(),nums.end());
     solve(nums,ans,0);
     int val = 0;
-    for(auto i:temp){
-        cout<<i<<"\t";
-    }
+
     for(int i=0;i<ans.size();i++){
         if(ans[i] == temp){
             val = i;
